@@ -16,6 +16,7 @@ class Game():
             self.render()
             self.execute_move()
             self.check_for_winner()
+            self.check_for_tie()
             self.switch_turn()
         if self.tie or self.winner:
             self.render()
@@ -69,14 +70,19 @@ class Game():
             ('a2', 'b2', 'c2'),
             ('a3', 'b3', 'c3'),
             ('a1', 'b2', 'c3'),
-            ('a3', 'a2', 'c1'),
+            ('a3', 'b2', 'c1'),
         )
         
         for condition in win_conditions:
             if self.board[condition[0]] and self.board[condition[0]] == self.board[condition[1]] == self.board[condition[2]]:
                 self.winner = self.player_turn
                 return
-        
+
+    def check_for_tie(self):
+        if all(self.board[position] is not None for position in self.board) and not self.winner:
+            self.tie = True
+            return
+
 game_instance=Game()
 game_instance.play_game()
 # print(game_instance.board, game_instance.player_turn, game_instance.tie, game_instance.winner)
