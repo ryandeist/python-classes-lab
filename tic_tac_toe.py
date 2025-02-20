@@ -1,9 +1,9 @@
 class Game():
-    def __init__(self, winner=None, player_turn='X', tie=False, board=None):
-        self.player_turn = player_turn
-        self.tie = tie
-        self.winner = winner
-        self.board = board if board is not None else { 
+    def __init__(self):
+        self.player_turn = 'X'
+        self.tie = False
+        self.winner = None
+        self.board = { 
             'a1': None, 'b1': None, 'c1': None,
             'a2': None, 'b2': None, 'c2': None,
             'a3': None, 'b3': None, 'c3': None,
@@ -29,21 +29,27 @@ class Game():
         # Render Board
         active_board = self.board
         print(f'''
-                A   B   C
-            1)  {active_board['a1'] or ' '} | {active_board['b1'] or ' '} | {active_board['c1'] or ' '}
-                ----------
-            2)  {active_board['a2'] or ' '} | {active_board['b2'] or ' '} | {active_board['c2'] or ' '}
-                ----------
-            3)  {active_board['a3'] or ' '} | {active_board['b3'] or ' '} | {active_board['c3'] or ' '}
+                 A   B   C
+            1)   {active_board['a1'] or ' '} | {active_board['b1'] or ' '} | {active_board['c1'] or ' '}
+                -----------
+            2)   {active_board['a2'] or ' '} | {active_board['b2'] or ' '} | {active_board['c2'] or ' '}
+                -----------
+            3)   {active_board['a3'] or ' '} | {active_board['b3'] or ' '} | {active_board['c3'] or ' '}
             ''')
         # Render Message
         if self.tie == True:
-            print('Tie game! Play again?')
+            print('Tie game! No one wins.')
         elif self.winner:
             print(f'{self.winner} wins the game!')
-            print(f"The score is X - {self.scoreboard.get('X')}, O - {self.scoreboard.get('O')}")
+            print(f"""
+                Scoreboard:
+                  X  |  O  
+                -----------
+                  {self.scoreboard.get('X')}  |  {self.scoreboard.get('O')} 
+                """)
+            # print(f"The score is X - {self.scoreboard.get('X')}, O - {self.scoreboard.get('O')}")
         else:
-            print(f'It\'s player {self.player_turn}\'s turn.')
+            print(f'It\'s {self.player_turn}\'s turn.')
 
     def switch_turn(self):
         if self.player_turn == 'X':
@@ -53,7 +59,7 @@ class Game():
 
     def execute_move(self):
         while True:
-            move = input('Input coordinates to move(ie: A1) or type "exit" to quit: ').strip().lower()
+            move = input('Input coordinates to move(ie: A1) or type "exit" to exit: ').strip().lower()
             
             if move == 'exit':
                 print('See you later!')
@@ -93,7 +99,15 @@ class Game():
         rematch = input('Rematch? (Y/N): ').strip().lower()
         
         if rematch == 'y':
-            self.__init__()
+            self.board = {  
+                'a1': None, 'b1': None, 'c1': None,
+                'a2': None, 'b2': None, 'c2': None,
+                'a3': None, 'b3': None, 'c3': None,
+            }
+            self.winner = None
+            self.tie = False
+            self.player_turn = 'X'
+            
             self.play_game()
             return
         else:
