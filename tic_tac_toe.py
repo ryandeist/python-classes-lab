@@ -10,7 +10,18 @@ class Game():
         self.winner = winner
         self.board = board
 
+    def play_game(self):
+        print('It\'s time to duel!')
+        while not self.tie and not self.winner:
+            self.render()
+            self.execute_move()
+            self.check_for_winner()
+            self.switch_turn()
+        if self.tie or self.winner:
+            self.render()
+
     def render(self):
+        # Render Board
         active_board = self.board
         print(f'''
                 A   B   C
@@ -20,20 +31,13 @@ class Game():
                 ----------
             3)  {active_board['a3'] or ' '} | {active_board['b3'] or ' '} | {active_board['c3'] or ' '}
             ''')
-
+        # Render Message
         if self.tie == True:
             print('Tie game! Play again?')
         elif self.winner:
             print(f'{self.winner} wins the game! Play again?')
         else:
             print(f'It\'s player {self.player_turn}\'s turn.')
-
-    def play_game(self):
-        print('It\'s time to duel!')
-        while not self.tie and not self.winner:
-            self.render()
-            self.execute_move()
-            self.switch_turn()
 
     def switch_turn(self):
         if self.player_turn == 'X':
@@ -42,6 +46,7 @@ class Game():
             self.player_turn = 'X'
 
     def execute_move(self):
+        while True:
             move = input('Input coordinates to move(ie: A1) or type "exit" to quit:').strip().lower()
             
             if move == 'exit':
@@ -55,7 +60,22 @@ class Game():
                 self.board[move] = self.player_turn
                 return
 
-    # def check_for_tie(self):
+    def check_for_winner(self):
+        win_conditions = (
+            ('a1', 'a2', 'a3'),
+            ('b1', 'b2', 'b3'),
+            ('c1', 'c2', 'c3'),
+            ('a1', 'b1', 'c1'),
+            ('a2', 'b2', 'c2'),
+            ('a3', 'b3', 'c3'),
+            ('a1', 'b2', 'c3'),
+            ('a3', 'a2', 'c1'),
+        )
+        
+        for condition in win_conditions:
+            if self.board[condition[0]] and self.board[condition[0]] == self.board[condition[1]] == self.board[condition[2]]:
+                self.winner = self.player_turn
+                return
         
 game_instance=Game()
 game_instance.play_game()
