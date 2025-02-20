@@ -30,9 +30,10 @@ class Game():
 
     def play_game(self):
         print('It\'s time to duel!')
-        self.render()
-        self.execute_move()
-        self.switch_turn()
+        while not self.tie and not self.winner:
+            self.render()
+            self.execute_move()
+            self.switch_turn()
 
     def switch_turn(self):
         if self.player_turn == 'X':
@@ -41,7 +42,6 @@ class Game():
             self.player_turn = 'X'
 
     def execute_move(self):
-        while True:
             move = input('Input coordinates to move(ie: A1) or type "exit" to quit:').strip().lower()
             
             if move == 'exit':
@@ -53,6 +53,7 @@ class Game():
                 print('Invalid move. That position is taken. Try again.')
             else:
                 self.board[move] = self.player_turn
+                return
 
     # def check_for_tie(self):
         
