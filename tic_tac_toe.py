@@ -1,14 +1,17 @@
 class Game():
-    def __init__(self, winner=None, player_turn='X', tie=False, 
-                board={
-                    'a1': None, 'b1': None, 'c1': None,
-                    'a2': None, 'b2': None, 'c2': None,
-                    'a3': None, 'b3': None, 'c3': None,
-                }):
+    def __init__(self, winner=None, player_turn='X', tie=False, board=None):
         self.player_turn = player_turn
         self.tie = tie
         self.winner = winner
-        self.board = board
+        self.board = board if board is not None else { 
+            'a1': None, 'b1': None, 'c1': None,
+            'a2': None, 'b2': None, 'c2': None,
+            'a3': None, 'b3': None, 'c3': None,
+        }
+        self.scoreboard = {
+            'X': 0,
+            'O': 0,
+        }
 
     def play_game(self):
         print('It\'s time to duel!')
@@ -20,6 +23,7 @@ class Game():
             self.switch_turn()
         if self.tie or self.winner:
             self.render()
+            self.reset_game()
 
     def render(self):
         # Render Board
@@ -36,7 +40,8 @@ class Game():
         if self.tie == True:
             print('Tie game! Play again?')
         elif self.winner:
-            print(f'{self.winner} wins the game! Play again?')
+            print(f'{self.winner} wins the game!')
+            print(f"The score is X - {self.scoreboard.get('X')}, O - {self.scoreboard.get('O')}")
         else:
             print(f'It\'s player {self.player_turn}\'s turn.')
 
@@ -48,7 +53,7 @@ class Game():
 
     def execute_move(self):
         while True:
-            move = input('Input coordinates to move(ie: A1) or type "exit" to quit:').strip().lower()
+            move = input('Input coordinates to move(ie: A1) or type "exit" to quit: ').strip().lower()
             
             if move == 'exit':
                 print('See you later!')
@@ -76,6 +81,7 @@ class Game():
         for condition in win_conditions:
             if self.board[condition[0]] and self.board[condition[0]] == self.board[condition[1]] == self.board[condition[2]]:
                 self.winner = self.player_turn
+                self.scoreboard[self.winner] += 1
                 return
 
     def check_for_tie(self):
@@ -83,6 +89,16 @@ class Game():
             self.tie = True
             return
 
+    def reset_game(self):
+        rematch = input('Rematch? (Y/N): ').strip().lower()
+        
+        if rematch == 'y':
+            self.__init__()
+            self.play_game()
+            return
+        else:
+            print('See you later!')
+            return
+
 game_instance=Game()
 game_instance.play_game()
-# print(game_instance.board, game_instance.player_turn, game_instance.tie, game_instance.winner)
