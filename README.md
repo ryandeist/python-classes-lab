@@ -196,7 +196,7 @@ If both of these conditions are met, the value of `tie` should be set to `True`.
 ### Step 7 - Switching turns
 The `switch_turn` method should alternate the value of `turn` between `'X'` and `'O'`. This should occur at the end of every turn. There are several ways to accomplish this, but a small lookup table using a dictionary might work nicely.
 
-## Step 8 - Managing gameplay
+### Step 8 - Managing gameplay
 The last step is combining all these methods in a functional gameplay loop. The loop should continue until a `winner` or `tie` is declared.
 
 Below is an outline of how you might structure the `play_game` method:
