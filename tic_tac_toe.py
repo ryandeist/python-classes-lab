@@ -47,7 +47,6 @@ class Game():
                 -----------
                   {self.scoreboard.get('X')}  |  {self.scoreboard.get('O')} 
                 """)
-            # print(f"The score is X - {self.scoreboard.get('X')}, O - {self.scoreboard.get('O')}")
         else:
             print(f'It\'s {self.player_turn}\'s turn.')
 
